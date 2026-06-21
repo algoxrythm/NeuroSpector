@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 8
+names: ['missing_analog_pins', 'missing_atmega', 'missing_capacitors', 'missing_crystal_os', 'missing_digital_pins', 'missing_eps', 'missing_usb', 'missing_voltage_reg']
+
+roboflow:
+  workspace: pranavs-workspace-u8akj
+  project: neurospector
+  version: 1
+  license: Private
+  url: https://app.roboflow.com/pranavs-workspace-u8akj/neurospector/1

@@ -1,0 +1,9 @@
+yolo_env/
+__pycache__/
+*.pyc
+.vscode/
+yolov8m.pt
+runs/detect/predict*/
+ns_captures/
+ns_manual_captures/
+inspection_logs/

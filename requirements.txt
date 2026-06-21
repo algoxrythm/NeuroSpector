@@ -1,0 +1,7 @@
+ultralytics==8.4.67
+PyQt6
+pyserial
+opencv-python
+torch
+torchvision
+torchaudioY
