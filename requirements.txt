@@ -4,4 +4,4 @@ pyserial
 opencv-python
 torch
 torchvision
-torchaudioY
+torchaudio
