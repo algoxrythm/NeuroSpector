@@ -1,30 +1,59 @@
-NeuroSpector: Open-Source AOI System 🔬
+NeuroSpector
 
-NeuroSpector is a low-cost (~$72 / 6000 INR), open-source Automated Optical Inspection (AOI) system for Printed Circuit Boards (PCBs). It combines custom 3D-printed gantry robotics, edge-microcontrollers, and a YOLOv8m deep learning model to detect missing PCB components in real-time.
+NeuroSpector is an open-source, ultra-low-cost Automated Optical Inspection (AOI) system designed for Printed Circuit Board (PCB) quality control.
 
-🚀 Features
+Commercial AOI machines frequently exceed $10,000 USD. This project provides a highly accurate, reproducible alternative for approximately 6,000 INR (~$72 USD) by combining a custom 3D-printed linear gantry, edge microcontrollers, and a YOLOv8m deep learning model.
 
-Real-Time Detection: 13.0 ms inference speed (~76 FPS) powered by NVIDIA CUDA.
+⚙️ Core Architecture
 
-Exceptional Accuracy: Achieved 0.995 mAP@0.5 with zero false positives across 8 defect classes.
+The system utilizes a hybrid communication loop to achieve real-time, zero-lag inspection without introducing mechanical cable drag on the moving gantry:
 
-Cyber-Industrial UI: Built with PyQt6, featuring an asynchronous hardware terminal and dynamic warning HUD.
+Vision Node: A local IP camera stream (prototyped with a Samsung ISOCELL HP2 sensor) acts as the wireless optical feed.
 
-Hybrid Architecture: Uses a smartphone IP camera (Samsung S23 Ultra ISOCELL HP2) to eliminate gantry cable drag, while an ESP32 handles hard-real-time motor limits.
+Compute Node: A central machine (running an NVIDIA RTX 3050 Ti) processes the OpenCV video stream through a YOLOv8m model at 13.0ms per frame (~76 FPS).
 
-🛠️ Hardware Requirements
+Control Node: An ESP32 connected via USB Serial handles hard-real-time motor pulses and processes mechanical limit switch interrupts independently of the host OS.
 
-Microcontroller: ESP32 Development Board
+🧰 Hardware Bill of Materials (BOM)
 
-Actuation: MG996R Continuous Rotation Servo + GT2 Timing Belt
+Component
 
-Driver: PCA9685 I2C PWM Driver (with external 5V 3A power supply)
+Function
 
-Safety: 2x Mechanical Limit Switches
+ESP32 Dev Module
 
-Camera: Any IP Webcam app (Smartphone) or USB camera
+Main control logic and serial communication
 
-💻 Installation (Windows & Linux)
+PCA9685 Driver
+
+I2C PWM generation (isolates motor current)
+
+MG996R Servo
+
+Modified for 360° continuous rotation
+
+GT2 Timing Belt & Pulley
+
+Linear actuation for the camera carriage
+
+
+Mechanical Limit Switches
+(Add a demo GIF or image of the UI/Gantry here in the future)
+Closed-loop boundary detection (x2)
+
+
+5V 3A Power Supply
+
+Dedicated power for the motor driver
+
+3D Printed Parts / Rails
+
+Structural gantry framework
+
+
+🚀 Installation
+
+The software stack is cross-platform and will automatically detect your OS (Windows, Linux, or macOS) and active serial ports.
 
 1. Clone the repository
 
@@ -32,35 +61,50 @@ git clone [https://github.com/YOUR_USERNAME/NeuroSpector.git](https://github.com
 cd NeuroSpector
 
 
-2. Create a Virtual Environment
+2. Setup a Python Virtual Environment
 
-# Windows
+For Windows:
+
 python -m venv yolo_env
 yolo_env\Scripts\activate
 
-# Linux/macOS
+
+For Linux / macOS:
+
 python3 -m venv yolo_env
 source yolo_env/bin/activate
 
 
-3. Install Dependencies
+3. Install Dependencies(Add a demo GIF or image of the UI/Gantry here in the future)
 
 pip install -r requirements.txt
 
 
-🎮 Running the System
+💻 Usage
 
-We have included a pre-flight diagnostic launcher that verifies your environment, checks for the ESP32 connection, and boots the UI safely.
+We have included a pre-flight diagnostic launcher that verifies your environment, auto-detects your connected ESP32 (COM or /dev/ttyUSB), and boots the PyQt6 Cyber-Industrial Dashboard.
 
-python neuro_launcher.py
+python ns_launch.py
 
 
-(Note: If the ESP32 is not connected, the system will automatically fall back to Simulation Mode).
+Note: If the ESP32 is not connected, the system will automatically fall back to Simulation Mode, allowing you to use the UI and test the AI without the physical hardware gantry.
 
-🧠 Pre-Trained Model
+Just want to test the AI model?
 
-The repository includes our fully trained YOLOv8 Medium weights (best.pt) inside runs/detect/train/weights/. It is trained to detect 8 missing components on an Arduino Uno (ATmega, Crystal Oscillator, Analog/Digital Pins, etc.).
+If you don't want to run the full UI and just want to see the model detect defects on test images (or via your webcam), please refer to our beginner-friendly guide: how_to_check_trained_model.txt.
 
-📝 License
+🧠 Model Performance
 
-Distributed under the MIT License. See LICENSE for more information.
+The included best.pt model was trained to detect missing surface-mount devices and headers across 8 defect classes. Aggressive photometric and morphological augmentations were applied to the dataset to simulate factory vibrations and varying illumination.
+
+mAP@0.5: 0.995
+
+Precision: 0.981
+
+Recall: 1.000
+
+False Positives: 0 (Evaluated on validation matrix)
+
+📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
