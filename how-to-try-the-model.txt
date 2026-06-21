@@ -1,0 +1,111 @@
+=============================================================================
+NEUROSPECTOR: THE BEGINNER'S GUIDE TO TESTING THE AI
+
+Hello! If you have no programming experience and just want to see this AI
+model work on your computer, you are in the right place.
+
+Follow these steps exactly, and you'll have an industrial-grade AI finding
+missing computer chips on your screen in just a few minutes.
+
+*** PREREQUISITE: You must have Python installed on your computer.
+If you don't have it, go to Python.org, click Download, and install it.
+(IMPORTANT for Windows: During installation, make sure to check the box
+that says "Add Python to PATH" at the very bottom before clicking Install).
+
+PHASE 1: DOWNLOAD THE PROJECT TO YOUR COMPUTER
+
+Go to the GitHub repository link provided to you.
+
+Look for the big green button that says "<> Code". Click it.
+
+Click "Download ZIP".
+
+Once downloaded, find the ZIP file, right-click it, and select "Extract All".
+
+Move this extracted folder (named NeuroSpector-main) to your Desktop so it is easy to find.
+
+PHASE 2: OPEN THE "HACKER" TERMINAL
+
+We need to give your computer some text commands. Here is the easiest way
+to open the terminal exactly where we need it:
+
+FOR WINDOWS USERS:
+
+Open the NeuroSpector-main folder on your Desktop.
+
+Click on the long white address bar at the very top of the window (where it says something like This PC > Desktop > NeuroSpector-main).
+
+Delete all the text in that bar, type the letters cmd, and press Enter.
+
+A black terminal window will pop up.
+
+FOR MAC/LINUX USERS:
+
+Find the NeuroSpector-main folder on your Desktop.
+
+Right-click the folder and select "New Terminal at Folder" (Mac) or "Open in Terminal" (Linux).
+
+PHASE 3: SET UP THE AI ENVIRONMENT (One-Time Setup)
+
+Don't be intimidated by the black screen! Just copy and paste these commands
+one by one, pressing Enter after each one. Wait for a command to finish
+before pasting the next one.
+
+FOR WINDOWS:
+
+python -m venv yolo_env
+
+yolo_env\Scripts\activate
+
+pip install -r requirements.txt
+
+FOR MAC/LINUX:
+
+python3 -m venv yolo_env
+
+source yolo_env/bin/activate
+
+pip install -r requirements.txt
+
+(Note: Step 3 might take a few minutes as it downloads the AI brain files).
+
+PHASE 4: RUN THE AI MODEL!
+
+Now for the fun part. We are going to tell the AI to look at the sample
+pictures inside the test/images/ folder and find all the missing components.
+
+Copy and paste this exact command and press Enter:
+
+yolo task=detect mode=predict model=runs/detect/train/weights/best.pt source=test/images/ conf=0.40 save=True
+
+What you just did:
+
+model=...best.pt : You told it to use the trained "Brain" file.
+
+source=test/images/ : You gave it the pictures to look at.
+
+save=True : You told it to draw boxes and save the results for you to look at.
+
+PHASE 5: SEE THE RESULTS
+
+When the terminal stops printing text, it's done!
+
+Go back to your normal Windows/Mac file explorer.
+
+Open the NeuroSpector-main folder.
+
+Navigate to: runs -> detect -> predict
+
+Open the images inside! You will see the AI has drawn colored bounding boxes around every missing pin, chip, and capacitor, along with a percentage of how confident it is.
+
+BONUS: TEST IT ON YOUR OWN WEBCAM
+
+Want to see it work in real-time? Hold an Arduino board (or a picture of
+one on your phone) up to your laptop's webcam, and run this command:
+
+yolo task=detect mode=predict model=runs/detect/train/weights/best.pt source=0 show=True
+
+A video window will pop up showing you what the AI sees right now!
+(Press 'q' on your keyboard to close the window when you are done).
+
+=============================================================================
